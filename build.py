@@ -643,7 +643,8 @@ class Project_gobject_introspection(Tarball, Project):
         )
 
     def build(self):
-        self.exec_msbuild(r'build\win32\vs%(vs_ver)s\gobject-introspection.sln')
+        self.exec_msbuild(r'build\win32\vs%(vs_ver)s\gobject-introspection.sln',
+                          add_path=os.path.join(self.builder.gtk_dir, 'bin'))
         self.install(r'.\COPYING share\doc\gobject-introspection')
 
 Project.add(Project_gobject_introspection())
@@ -1695,8 +1696,9 @@ class Builder(object):
         self.x86 = opts.platform == 'Win32'
         self.x64 = not self.x86
 
-        self.msbuild_opts = '/nologo /p:Platform=%(platform)s /p:PythonPath=%(python_dir)s %(msbuild_opts)s ' % \
-            dict(platform=opts.platform, python_dir=opts.python_dir, configuration=opts.configuration, msbuild_opts=opts.msbuild_opts)
+        self.msbuild_opts = '/nologo /p:Platform=%(platform)s /p:PythonPath=%(python_dir)s %(msbuild_opts)s /p:InstallRoot=%(gtk_dir)s' % \
+            dict(platform=opts.platform, python_dir=opts.python_dir, configuration=opts.configuration, msbuild_opts=opts.msbuild_opts,
+                 gtk_dir=self.gtk_dir)
 
         if global_verbose:
             self.msbuild_opts += ' /v:normal'

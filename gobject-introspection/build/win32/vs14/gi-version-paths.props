@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <VSVer>14</VSVer>
-    <GlibEtcInstallRoot>..\..\..\..\..\..\..\gtk\$(Platform)\$(Configuration)</GlibEtcInstallRoot>
+    <GlibEtcInstallRoot>$(InstallRoot)</GlibEtcInstallRoot>
     <CopyDir>..\..\..\..\gobject-introspection-rel</CopyDir>
     <!-- PythonDir needs to point to a 32-bit/x86 Python 2.7/3.3+ installation -->
     <PythonDir>$(PythonPath)</PythonDir>
