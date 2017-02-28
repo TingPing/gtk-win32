@@ -222,7 +222,7 @@ class Meson(Project):
             self.exec_vs(cmd, add_path=add_path)
         # we simply run 'ninja install' that takes care of everything, running explicity from the build dir
         self.builder.exec_vs('ninja install', add_path=self.builder.ninja_path, working_dir=ninja_build)
-        
+
 #==============================================================================
 # Tools used to build the various projects
 #==============================================================================
@@ -632,6 +632,21 @@ class Project_glib(Tarball, Project):
         self.install(r'.\COPYING share\doc\glib')
 
 Project.add(Project_glib())
+
+class Project_gobject_introspection(Tarball, Project):
+    def __init__(self):
+        super().__init__(
+            'gobject-introspection',
+            archive_url='http://ftp.acc.umu.se/pub/GNOME/sources/gobject-introspection/1.50/gobject-introspection-1.50.0.tar.xz',
+            hash='1c6597c666f543c70ef3d7c893ab052968afae620efdc080c36657f4226337c5',
+            dependencies=['glib', 'cairo', 'pkg-config']
+        )
+
+    def build(self):
+        self.exec_msbuild(r'build\win32\vs%(vs_ver)s\gobject-introspection.sln')
+        self.install(r'.\COPYING share\doc\gobject-introspection')
+
+Project.add(Project_gobject_introspection())
 
 class Project_glib_networking(Tarball, Project):
     def __init__(self):
@@ -2120,4 +2135,3 @@ if __name__ == '__main__':
         args.func(args)
     else:
         parser.print_help()
-
